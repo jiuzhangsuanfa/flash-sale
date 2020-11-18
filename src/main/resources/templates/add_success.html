@@ -68,8 +68,6 @@
     </div>
   </div>
 
-
-
   <div class="cart py-container" id="cart">
     <!--主内容-->
     <div class="checkout py-container">
@@ -78,26 +76,36 @@
       </div>
       <div class="checkout-steps">
         <div class="hr"></div>
-        <!--支付和送货-->
         <div class="payshipInfo">
           <div class="hr"></div>
           <div class="step-cont">
             <ul class="send-detail">
-              <li>
-                <div class="sendGoods">
-                  <form th:action="@{/addSeckillActivityAction}" method="post">
-                    秒杀活动名称:<input type="text" name="name"><br><br>
-                    商品ID：<input type="text" name="commodityId"><br><br>
-                    秒杀价格：<input type="text" name="seckillPrice"><br><br>
-                    商品原价：<input type="text" name="oldPrice"><br><br>
-                    秒杀商品数量：<input type="text" name="seckillNumber"><br><br>
-                    开始时间：<input type="datetime-local" name="startTime"><br><br>
-                    结束时间：<input type="datetime-local" name="endTime"><br><br>
-                    <input type="submit" value="提交">
-                  </form>
-                </div>
+              <style>
+                .dialog-card {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                }
 
-              </li>
+                .dialog-card>p {
+                  display: flex;
+                  flex-direction: row;
+                  min-width: 10rem;
+                }
+
+                .dialog-card>p>span {
+                  flex-grow: 1;
+                  text-align: center;
+                }
+              </style>
+              <div class="dialog-card">
+                <h1>秒杀活动添加成功</h1>
+                <p>活动名称：<span th:text="${seckillActivity.name}"></span></p>
+                <p>商品原价：<span th:text="${seckillActivity.oldPrice}"></span></p>
+                <p>活动价格：<span th:text="${seckillActivity.seckillPrice}"></span></p>
+                <p>商品数量：<span th:text="${seckillActivity.availableStock}"></span></p>
+              </div>
             </ul>
           </div>
           <div class="hr"></div>
