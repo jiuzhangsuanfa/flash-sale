@@ -85,12 +85,16 @@
             <ul class="send-detail">
               <li>
                 <div class="sendGoods">
-                  <form th:action="@{/addSeckillActivityAction}" method="post">
+                  <form th:action="@{/activity}" method="post">
                     秒杀活动名称:<input type="text" name="name"><br><br>
-                    商品ID：<input type="text" name="commodityId"><br><br>
+                    商品名称：
+                    <select name="commodityId">
+                      <option value="1">iphone12</option>
+                      <option value="2">iphone12 pro</option>
+                    </select><br><br>
                     秒杀价格：<input type="text" name="seckillPrice"><br><br>
                     商品原价：<input type="text" name="oldPrice"><br><br>
-                    秒杀商品数量：<input type="text" name="seckillNumber"><br><br>
+                    秒杀商品数量：<input type="text" name="totalStock"><br><br>
                     开始时间：<input type="datetime-local" name="startTime"><br><br>
                     结束时间：<input type="datetime-local" name="endTime"><br><br>
                     <input type="submit" value="提交">
