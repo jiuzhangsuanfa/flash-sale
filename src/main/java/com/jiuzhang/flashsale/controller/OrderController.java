@@ -4,8 +4,8 @@ import javax.annotation.Resource;
 
 import com.jiuzhang.flashsale.entity.Activity;
 import com.jiuzhang.flashsale.entity.Order;
-import com.jiuzhang.flashsale.service.IActivityService;
-import com.jiuzhang.flashsale.service.IOrderService;
+import com.jiuzhang.flashsale.service.ActivityService;
+import com.jiuzhang.flashsale.service.OrderService;
 import com.jiuzhang.flashsale.service.RedisService;
 
 import org.springframework.stereotype.Controller;
@@ -34,10 +34,10 @@ public class OrderController {
     RedisService redisService;
 
     @Resource
-    IActivityService activityService;
+    ActivityService activityService;
 
     @Resource
-    IOrderService orderService;
+    OrderService orderService;
 
     /**
      * 根据秒杀活动 ID 创建订单

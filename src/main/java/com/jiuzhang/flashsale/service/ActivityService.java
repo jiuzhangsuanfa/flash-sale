@@ -13,7 +13,7 @@ import com.jiuzhang.flashsale.entity.Activity;
  * @author jiuzhang
  * @since 2021-01-15
  */
-public interface IActivityService extends IService<Activity> {
+public interface ActivityService extends IService<Activity> {
 
     List<Activity> getActivitysByStatus(Integer activityStatus);
 

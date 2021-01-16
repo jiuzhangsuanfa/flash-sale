@@ -2,7 +2,7 @@ package com.jiuzhang.flashsale.controller;
 
 import javax.annotation.Resource;
 
-import com.jiuzhang.flashsale.service.IActivityService;
+import com.jiuzhang.flashsale.service.ActivityService;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OverSellController {
 
     @Resource
-    IActivityService activityService;
+    ActivityService activityService;
 
     @PostMapping("{id}")
     public boolean oversell(@PathVariable long activityId, @RequestParam String type) {

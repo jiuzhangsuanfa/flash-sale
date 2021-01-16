@@ -1,16 +1,16 @@
 package com.jiuzhang.flashsale.component;
 
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
+import java.util.List;
 
 import javax.annotation.Resource;
 
 import com.jiuzhang.flashsale.entity.Activity;
-import com.jiuzhang.flashsale.service.IActivityService;
+import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.RedisService;
 
-import java.util.List;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 @Component
 public class RedisPreheatRunner implements ApplicationRunner {
@@ -19,11 +19,11 @@ public class RedisPreheatRunner implements ApplicationRunner {
     RedisService redisService;
 
     @Resource
-    IActivityService activityService;
+    ActivityService activityService;
 
     /**
      * 将商品库存同步到 redis 中
-     * 
+     *
      * @param args
      * @throws Exception
      */

@@ -11,9 +11,10 @@ import com.jiuzhang.flashsale.entity.Order;
  * @author jiuzhang
  * @since 2021-01-15
  */
-public interface IOrderService extends IService<Order> {
+public interface OrderService extends IService<Order> {
 
     Order createOrder(long activityId, int userId) throws Exception;
 
     void payOrderProcess(String orderId) throws Exception;
+
 }

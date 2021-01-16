@@ -11,6 +11,6 @@ import com.jiuzhang.flashsale.entity.Commodity;
  * @author jiuzhang
  * @since 2021-01-15
  */
-public interface ICommodityService extends IService<Commodity> {
+public interface CommodityService extends IService<Commodity> {
 
 }

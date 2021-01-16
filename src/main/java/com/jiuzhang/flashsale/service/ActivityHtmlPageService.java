@@ -23,10 +23,10 @@ public class ActivityHtmlPageService {
     private TemplateEngine templateEngine;
 
     @Autowired
-    private IActivityService activityService;
+    private ActivityService activityService;
 
     @Autowired
-    private ICommodityService commodityService;
+    private CommodityService commodityService;
 
     /**
      * 创建html页面

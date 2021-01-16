@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jiuzhang.flashsale.entity.Activity;
 import com.jiuzhang.flashsale.mapper.ActivityMapper;
-import com.jiuzhang.flashsale.service.IActivityService;
+import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.RedisService;
 
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  * @since 2021-01-15
  */
 @Service
-public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> implements IActivityService {
+public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> implements ActivityService {
 
     @Resource
     RedisService redisService;

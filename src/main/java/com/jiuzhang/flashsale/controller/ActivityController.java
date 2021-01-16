@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 
 import com.jiuzhang.flashsale.entity.Activity;
 import com.jiuzhang.flashsale.entity.Commodity;
-import com.jiuzhang.flashsale.service.IActivityService;
-import com.jiuzhang.flashsale.service.ICommodityService;
+import com.jiuzhang.flashsale.service.ActivityService;
+import com.jiuzhang.flashsale.service.CommodityService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ActivityController {
 
     @Resource
-    IActivityService activityService;
+    ActivityService activityService;
 
     @Resource
-    ICommodityService commodityService;
+    CommodityService commodityService;
 
     /**
      * 查询活动详情
