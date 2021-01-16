@@ -1,4 +1,4 @@
-package com.jiuzhang.seckill.mapper;
+package com.jiuzhang.flashsale.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import javax.annotation.Resource;
 
 import com.jiuzhang.flashsale.entity.Activity;
-import com.jiuzhang.flashsale.mapper.ActivityMapper;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

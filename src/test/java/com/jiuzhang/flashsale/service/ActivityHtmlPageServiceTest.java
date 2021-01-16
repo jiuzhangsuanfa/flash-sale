@@ -1,4 +1,4 @@
-package com.jiuzhang.seckill.service;
+package com.jiuzhang.flashsale.service;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
