@@ -7,8 +7,9 @@ import java.time.LocalDateTime;
 
 import javax.annotation.Resource;
 
-import com.jiuzhang.seckill.entity.Order;
-import com.jiuzhang.seckill.util.SnowFlake;
+import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.mapper.OrderMapper;
+import com.jiuzhang.flashsale.util.SnowFlake;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

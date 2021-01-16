@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 
 import javax.annotation.Resource;
 
-import com.jiuzhang.seckill.entity.Activity;
+import com.jiuzhang.flashsale.entity.Activity;
+import com.jiuzhang.flashsale.mapper.ActivityMapper;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

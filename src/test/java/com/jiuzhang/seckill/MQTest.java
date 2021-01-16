@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.util.Date;
 
-import com.jiuzhang.seckill.service.RocketMQService;
+import com.jiuzhang.flashsale.service.RocketMQService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
