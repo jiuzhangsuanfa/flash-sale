@@ -8,8 +8,8 @@ import com.jiuzhang.flashsale.entity.Order;
  * 服务类
  * </p>
  *
- * @author jobob
- * @since 2021-01-10
+ * @author jiuzhang
+ * @since 2021-01-15
  */
 public interface IOrderService extends IService<Order> {
 

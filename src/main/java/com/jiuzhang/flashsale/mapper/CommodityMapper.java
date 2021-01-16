@@ -8,8 +8,8 @@ import com.jiuzhang.flashsale.entity.Commodity;
  * Mapper 接口
  * </p>
  *
- * @author jobob
- * @since 2021-01-10
+ * @author jiuzhang
+ * @since 2021-01-15
  */
 public interface CommodityMapper extends BaseMapper<Commodity> {
 

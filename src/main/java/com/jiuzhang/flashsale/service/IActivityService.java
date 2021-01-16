@@ -10,16 +10,16 @@ import com.jiuzhang.flashsale.entity.Activity;
  * 服务类
  * </p>
  *
- * @author jobob
- * @since 2021-01-10
+ * @author jiuzhang
+ * @since 2021-01-15
  */
 public interface IActivityService extends IService<Activity> {
 
-    public List<Activity> getActivitysByStatus(Integer activityStatus);
+    List<Activity> getActivitysByStatus(Integer activityStatus);
 
-    public String processSeckill(long activityId);
+    boolean processOverSell(long activityId);
 
-    public boolean stockValidator(long activityId);
+    boolean hasStock(long activityId);
 
     boolean lockStock(Long activityId);
 

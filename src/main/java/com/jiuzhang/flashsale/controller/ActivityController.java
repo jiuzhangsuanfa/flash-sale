@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/activitys")
+@RequestMapping("activities")
 public class ActivityController {
+
     @Resource
     IActivityService activityService;
 
@@ -26,17 +27,16 @@ public class ActivityController {
     ICommodityService commodityService;
 
     /**
-     * 跳转活动详情页面
+     * 查询活动详情
      *
-     * @param resultMap  存储传给前端的数据
-     * @param activityId 活动 ID
+     * @param resultMap thymeleaf 模板数据
+     * @param id        活动 ID
      * @return 活动详情页面
      */
-    @RequestMapping("/{activityId}")
-    public String itemPage(Map<String, Object> resultMap, @PathVariable long activityId) {
-        Activity activity = activityService.getById(activityId);
+    @GetMapping("{id}")
+    public String itemPage(Map<String, Object> resultMap, @PathVariable long id) {
+        Activity activity = activityService.getById(id);
         Commodity commodity = commodityService.getById(activity.getCommodityId());
-
         resultMap.put("activity", activity);
         resultMap.put("commodity", commodity);
         return "seckill_item";
@@ -78,7 +78,7 @@ public class ActivityController {
      *
      * @return 活动页面名称
      */
-    @RequestMapping("/add_activity.html")
+    @GetMapping("add_activity.html")
     public String addSeckillActivity() {
         return "add_activity";
     }

@@ -8,8 +8,8 @@ import com.jiuzhang.flashsale.entity.Activity;
  * Mapper 接口
  * </p>
  *
- * @author jobob
- * @since 2021-01-10
+ * @author jiuzhang
+ * @since 2021-01-15
  */
 public interface ActivityMapper extends BaseMapper<Activity> {
 
@@ -17,5 +17,6 @@ public interface ActivityMapper extends BaseMapper<Activity> {
 
     int revertStock(Long activityId);
 
-    void deductStock(Long activityId);
+    int deductStock(Long activityId);
+
 }

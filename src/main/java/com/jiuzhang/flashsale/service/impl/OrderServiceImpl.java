@@ -1,5 +1,9 @@
 package com.jiuzhang.flashsale.service.impl;
 
+import java.time.LocalDateTime;
+
+import javax.annotation.Resource;
+
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jiuzhang.flashsale.entity.Activity;
@@ -10,21 +14,17 @@ import com.jiuzhang.flashsale.service.IOrderService;
 import com.jiuzhang.flashsale.service.RocketMQService;
 import com.jiuzhang.flashsale.util.SnowFlake;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.time.LocalDateTime;
-import java.util.Date;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
  * 服务实现类
  * </p>
  *
- * @author jobob
- * @since 2021-01-10
+ * @author jiuzhang
+ * @since 2021-01-15
  */
 @Slf4j
 @Service
@@ -66,7 +66,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     /**
      * 支付订单处理
-     * 
+     *
      * @param orderId 订单 ID
      */
     @Override

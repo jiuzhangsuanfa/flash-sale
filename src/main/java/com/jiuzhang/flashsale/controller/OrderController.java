@@ -1,12 +1,5 @@
 package com.jiuzhang.flashsale.controller;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
 import javax.annotation.Resource;
 
 import com.jiuzhang.flashsale.entity.Activity;
@@ -15,17 +8,27 @@ import com.jiuzhang.flashsale.service.IActivityService;
 import com.jiuzhang.flashsale.service.IOrderService;
 import com.jiuzhang.flashsale.service.RedisService;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * <p>
  * 前端控制器
  * </p>
  *
- * @author jobob
- * @since 2021-01-10
+ * @author jiuzhang
+ * @since 2021-01-15
  */
 @Slf4j
 @Controller
-@RequestMapping("/orders")
+@RequestMapping("orders")
 public class OrderController {
     @Resource
     RedisService redisService;
@@ -37,40 +40,29 @@ public class OrderController {
     IOrderService orderService;
 
     /**
-     * 处理抢购请求
-     * 
-     * @param activityId
+     * 根据秒杀活动 ID 创建订单
+     *
+     * @param activityId 秒杀活动 ID
      * @return
      */
-    @GetMapping("/{activityId}")
-    public ModelAndView seckillCommodity(@PathVariable long activityId) {
+    @PostMapping
+    public ModelAndView seckillCommodity(@RequestParam long activityId) {
         boolean stockValidateResult = false;
-
         ModelAndView modelAndView = new ModelAndView();
+        String infoName = "resultInfo";
         try {
-            // /*
-            // * 判断用户是否在已购名单中
-            // */
-            // if (redisService.isInLimitMember(activityId, 1234)) {
-            // //提示用户已经在限购名单中，返回结果
-            // modelAndView.addObject("resultInfo", "对不起，您已经在限购名单中");
-            // modelAndView.setViewName("seckill_result");
-            // return modelAndView;
-            // }
-            /*
-             * 确认是否能够进行秒杀
-             */
-            stockValidateResult = activityService.stockValidator(activityId);
+            /** 确认是否能够进行秒杀 */
+            stockValidateResult = activityService.hasStock(activityId);
             if (stockValidateResult) {
                 Order order = orderService.createOrder(activityId, 1234);
-                modelAndView.addObject("resultInfo", "秒杀成功，订单创建中，订单ID：" + order.getId());
+                modelAndView.addObject(infoName, "秒杀成功，订单创建中，订单ID：" + order.getId());
                 modelAndView.addObject("orderId", order.getId());
             } else {
-                modelAndView.addObject("resultInfo", "对不起，商品库存不足");
+                modelAndView.addObject(infoName, "对不起，商品库存不足");
             }
         } catch (Exception e) {
             log.error("秒杀系统异常" + e.toString());
-            modelAndView.addObject("resultInfo", "秒杀失败");
+            modelAndView.addObject(infoName, "秒杀失败");
         }
         modelAndView.setViewName("seckill_result");
         return modelAndView;
@@ -78,16 +70,15 @@ public class OrderController {
 
     /**
      * 订单查询
-     * 
-     * @param orderId
+     *
+     * @param id 订单 ID
      * @return
      */
-    @RequestMapping("/orderQuery/{orderId}")
-    public ModelAndView orderQuery(@PathVariable String orderId) {
-        log.info("订单查询，订单号：" + orderId);
-        Order order = orderService.getById(orderId);
+    @GetMapping("{id}")
+    public ModelAndView orderQuery(@PathVariable String id) {
+        log.info("订单查询，订单号：" + id);
+        Order order = orderService.getById(id);
         ModelAndView modelAndView = new ModelAndView();
-
         if (order != null) {
             modelAndView.setViewName("order");
             modelAndView.addObject("order", order);
@@ -100,13 +91,15 @@ public class OrderController {
     }
 
     /**
-     * 订单支付
-     * 
+     * 支付订单
+     *
+     * @param id 订单 ID
      * @return
+     * @throws Exception
      */
-    @RequestMapping("/payOrder/{orderId}")
-    public String payOrder(@PathVariable String orderId) throws Exception {
-        orderService.payOrderProcess(orderId);
-        return "redirect:/orders/orderQuery/" + orderId;
+    @PostMapping("{id}")
+    public String payOrder(@PathVariable String id) throws Exception {
+        orderService.payOrderProcess(id);
+        return "redirect:/orders/orderQuery/" + id;
     }
 }
