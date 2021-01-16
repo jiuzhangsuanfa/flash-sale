@@ -8,6 +8,11 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jiuzhang.flashsale.entity.Activity;
 import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.exception.OrderCreateException;
+import com.jiuzhang.flashsale.exception.OrderInvalidException;
+import com.jiuzhang.flashsale.exception.OrderNotExistException;
+import com.jiuzhang.flashsale.exception.OrderPayCheckException;
+import com.jiuzhang.flashsale.exception.OrderPayException;
 import com.jiuzhang.flashsale.mapper.ActivityMapper;
 import com.jiuzhang.flashsale.mapper.OrderMapper;
 import com.jiuzhang.flashsale.service.OrderService;
@@ -44,7 +49,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private final SnowFlake snowFlake = new SnowFlake(1, 1);
 
     @Override
-    public Order createOrder(long activityId, int userId) throws Exception {
+    public Order createOrder(long activityId, int userId) throws OrderCreateException, OrderPayCheckException {
         Activity activity = activityMapper.selectById(activityId);
         // 1. 创建订单
         Order order = new Order();
@@ -53,12 +58,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setUserId((long) userId);
         order.setOrderAmount(activity.getSeckillPrice());
         // 2. 发送创建订单消息
-        rocketMQService.sendMessage("seckill_order", JSON.toJSONString(order));
+        try {
+            rocketMQService.sendMessage("seckill_order", JSON.toJSONString(order));
+        } catch (Exception e) {
+            throw new OrderCreateException(order.getId());
+        }
         // 3. 发送订单付款状态校验消息
         // 开源 RocketMQ 支持延迟消息，但是不支持秒级精度。默认支持 18 个 level 的延迟消息
         // 通过 broker 端的 messageDelayLevel 配置项确定的
         // messageDelayLevel=1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h
-        rocketMQService.sendDelayMessage("pay_check", JSON.toJSONString(order), 3);
+        try {
+            rocketMQService.sendDelayMessage("pay_check", JSON.toJSONString(order), 3);
+        } catch (Exception e) {
+            throw new OrderPayCheckException(order.getId());
+        }
         return order;
     }
 
@@ -66,19 +79,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * 支付订单处理
      *
      * @param orderId 订单 ID
+     * @throws OrderPayException
      */
     @Override
-    public void payOrderProcess(String orderId) throws Exception {
+    public Order payOrderProcess(String orderId)
+            throws OrderNotExistException, OrderInvalidException, OrderPayException {
         log.info("完成支付订单，订单号：" + orderId);
         Order order = baseMapper.selectById(orderId);
         // 1. 判断订单是否存在
         // 2. 判断订单状态是否为未支付状态
         if (order == null) {
             log.error("订单号对应订单不存在：" + orderId);
-            return;
-        } else if (order.getOrderStatus() != 1) {
+            throw new OrderNotExistException(orderId);
+        }
+        if (order.getOrderStatus() != 1) {
             log.error("订单状态无效：" + orderId);
-            return;
+            throw new OrderInvalidException(orderId);
         }
         // 3. 订单支付完成
         order.setPayTime(LocalDateTime.now());
@@ -89,6 +105,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setOrderStatus(2);
         baseMapper.updateById(order);
         // 3. 发送订单付款成功消息
-        rocketMQService.sendMessage("pay_done", JSON.toJSONString(order));
+        try {
+            rocketMQService.sendMessage("pay_done", JSON.toJSONString(order));
+        } catch (Exception e) {
+            throw new OrderPayException(orderId);
+        }
+        return order;
     }
 }

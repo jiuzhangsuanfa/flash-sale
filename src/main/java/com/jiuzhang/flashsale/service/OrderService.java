@@ -2,6 +2,11 @@ package com.jiuzhang.flashsale.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.exception.OrderCreateException;
+import com.jiuzhang.flashsale.exception.OrderInvalidException;
+import com.jiuzhang.flashsale.exception.OrderNotExistException;
+import com.jiuzhang.flashsale.exception.OrderPayCheckException;
+import com.jiuzhang.flashsale.exception.OrderPayException;
 
 /**
  * <p>
@@ -13,8 +18,8 @@ import com.jiuzhang.flashsale.entity.Order;
  */
 public interface OrderService extends IService<Order> {
 
-    Order createOrder(long activityId, int userId) throws Exception;
+    Order createOrder(long activityId, int userId) throws OrderCreateException, OrderPayCheckException;
 
-    void payOrderProcess(String orderId) throws Exception;
+    Order payOrderProcess(String orderId) throws OrderNotExistException, OrderInvalidException, OrderPayException;
 
 }
