@@ -1,4 +1,4 @@
-package com.jiuzhang.flashsale.service;
+package com.jiuzhang.flashsale.service.impl;
 
 import java.util.Collections;
 
@@ -12,7 +12,7 @@ import redis.clients.jedis.JedisPool;
 
 @Slf4j
 @Service
-public class RedisService {
+public class RedisServiceImpl {
 
     @Resource
     private JedisPool jedisPool;
@@ -109,21 +109,20 @@ public class RedisService {
 
             Long stock = (Long) jedisClient.eval(script, Collections.singletonList(key), Collections.emptyList());
             if (stock < 0) {
-                System.out.println("库存不足");
+                log.error("库存不足");
                 return false;
-            } else {
-                System.out.println("恭喜，抢购成功");
             }
+            log.info("恭喜，抢购成功");
             return true;
-        } catch (Throwable throwable) {
-            System.out.println("库存扣减失败：" + throwable.toString());
+        } catch (Exception exception) {
+            log.error("库存扣减失败：" + exception.toString());
             return false;
         }
     }
 
     /**
      * 获取分布式锁
-     * 
+     *
      * @param lockKey
      * @param requestId
      * @param expireTime

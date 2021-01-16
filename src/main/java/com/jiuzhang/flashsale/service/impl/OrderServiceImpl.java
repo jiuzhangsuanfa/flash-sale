@@ -16,7 +16,6 @@ import com.jiuzhang.flashsale.exception.OrderPayException;
 import com.jiuzhang.flashsale.mapper.ActivityMapper;
 import com.jiuzhang.flashsale.mapper.OrderMapper;
 import com.jiuzhang.flashsale.service.OrderService;
-import com.jiuzhang.flashsale.service.RocketMQService;
 import com.jiuzhang.flashsale.util.SnowFlake;
 
 import org.springframework.stereotype.Service;
@@ -39,7 +38,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     ActivityMapper activityMapper;
 
     @Resource
-    private RocketMQService rocketMQService;
+    private RocketMQServiceImpl rocketMQService;
 
     /**
      * datacenterId 数据中心

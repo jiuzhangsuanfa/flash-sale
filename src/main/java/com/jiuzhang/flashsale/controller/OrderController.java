@@ -4,9 +4,12 @@ import javax.annotation.Resource;
 
 import com.jiuzhang.flashsale.entity.Activity;
 import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.exception.OrderInvalidException;
+import com.jiuzhang.flashsale.exception.OrderNotExistException;
+import com.jiuzhang.flashsale.exception.OrderPayException;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.OrderService;
-import com.jiuzhang.flashsale.service.RedisService;
+import com.jiuzhang.flashsale.service.impl.RedisServiceImpl;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("orders")
 public class OrderController {
     @Resource
-    RedisService redisService;
+    RedisServiceImpl redisService;
 
     @Resource
     ActivityService activityService;
@@ -98,7 +101,8 @@ public class OrderController {
      * @throws Exception
      */
     @PostMapping("{id}")
-    public String payOrder(@PathVariable String id) throws Exception {
+    public String payOrder(@PathVariable String id)
+            throws OrderNotExistException, OrderInvalidException, OrderPayException {
         orderService.payOrderProcess(id);
         return "redirect:/orders/orderQuery/" + id;
     }

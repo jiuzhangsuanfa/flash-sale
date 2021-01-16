@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jiuzhang.flashsale.entity.Activity;
 import com.jiuzhang.flashsale.mapper.ActivityMapper;
 import com.jiuzhang.flashsale.service.ActivityService;
-import com.jiuzhang.flashsale.service.RedisService;
 
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ import org.springframework.stereotype.Service;
 public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> implements ActivityService {
 
     @Resource
-    RedisService redisService;
+    RedisServiceImpl redisService;
 
     /**
      * 查询活动状态查询活动

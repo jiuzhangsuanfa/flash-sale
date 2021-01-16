@@ -9,7 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.jiuzhang.flashsale.entity.Order;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.OrderService;
-import com.jiuzhang.flashsale.service.RedisService;
+import com.jiuzhang.flashsale.service.impl.RedisServiceImpl;
 
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -28,7 +28,7 @@ public class OrderConsumer implements RocketMQListener<MessageExt> {
     @Resource
     private ActivityService activityService;
     @Resource
-    RedisService redisService;
+    RedisServiceImpl redisService;
 
     @Override
     @Transactional

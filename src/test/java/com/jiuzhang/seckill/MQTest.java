@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.util.Date;
 
-import com.jiuzhang.flashsale.service.RocketMQService;
+import com.jiuzhang.flashsale.service.impl.RocketMQServiceImpl;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class MQTest {
 
     @Autowired
-    RocketMQService rocketMQService;
+    RocketMQServiceImpl rocketMQService;
 
     @Test
     void testSendMessage() {

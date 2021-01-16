@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 
 import com.jiuzhang.flashsale.entity.Activity;
 import com.jiuzhang.flashsale.service.ActivityService;
-import com.jiuzhang.flashsale.service.RedisService;
+import com.jiuzhang.flashsale.service.impl.RedisServiceImpl;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class RedisPreheatRunner implements ApplicationRunner {
 
     @Resource
-    RedisService redisService;
+    RedisServiceImpl redisService;
 
     @Resource
     ActivityService activityService;
