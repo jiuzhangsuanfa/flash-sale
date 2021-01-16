@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @MapperScan("com.jiuzhang.flashsale.mapper")
 @SpringBootApplication
-public class SeckillApplication {
+public class FlashSaleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SeckillApplication.class, args);
+        SpringApplication.run(FlashSaleApplication.class, args);
     }
 
 }
