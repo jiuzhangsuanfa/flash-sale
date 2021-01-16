@@ -29,7 +29,7 @@ public class RedisPreheatRunner implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) {
-        List<Activity> activities = activityService.getActivitysByStatus(1);
+        List<Activity> activities = activityService.getActivitiesByStatus(1);
         for (Activity activity : activities) {
             redisService.setValue("stock:" + activity.getId(), activity.getAvailableStock());
         }

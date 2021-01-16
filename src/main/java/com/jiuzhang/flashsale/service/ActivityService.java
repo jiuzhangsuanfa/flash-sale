@@ -15,7 +15,7 @@ import com.jiuzhang.flashsale.entity.Activity;
  */
 public interface ActivityService extends IService<Activity> {
 
-    List<Activity> getActivitysByStatus(Integer activityStatus);
+    List<Activity> getActivitiesByStatus(Integer activityStatus);
 
     boolean processOverSell(long activityId);
 
@@ -23,7 +23,7 @@ public interface ActivityService extends IService<Activity> {
 
     boolean lockStock(Long activityId);
 
-    void revertStock(Long activityId);
+    boolean revertStock(Long activityId);
 
-    void deductStock(Long activityId);
+    boolean deductStock(Long activityId);
 }

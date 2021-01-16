@@ -35,7 +35,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
      * @return 所有状态相同的活动
      */
     @Override
-    public List<Activity> getActivitysByStatus(Integer activityStatus) {
+    public List<Activity> getActivitiesByStatus(Integer activityStatus) {
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("activity_status", activityStatus);
         return baseMapper.selectByMap(columnMap);
@@ -66,6 +66,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
      * @param activityId 商品ID
      * @return 是否还有库存
      */
+    @Override
     public boolean hasStock(long activityId) {
         String key = "stock:" + activityId;
         return redisService.stockDeductValidator(key);
@@ -88,8 +89,8 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
      * @param activityId 活动 ID
      */
     @Override
-    public void revertStock(Long activityId) {
-        baseMapper.revertStock(activityId);
+    public boolean revertStock(Long activityId) {
+        return baseMapper.revertStock(activityId) >= 1;
     }
 
     /**
@@ -98,8 +99,8 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
      * @param activityId 活动 ID
      */
     @Override
-    public void deductStock(Long activityId) {
-        baseMapper.deductStock(activityId);
+    public boolean deductStock(Long activityId) {
+        return baseMapper.deductStock(activityId) >= 1;
     }
 
 }

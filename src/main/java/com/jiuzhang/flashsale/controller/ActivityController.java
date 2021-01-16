@@ -51,7 +51,7 @@ public class ActivityController {
     @GetMapping
     public String activitys(Map<String, Object> resultMap) {
         // 获取活动状态为 1 的活动
-        List<Activity> activityList = activityService.getActivitysByStatus(1);
+        List<Activity> activityList = activityService.getActivitiesByStatus(1);
         resultMap.put("activityList", activityList);
         return "activity_list";
     }
