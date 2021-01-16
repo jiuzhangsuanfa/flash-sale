@@ -2,6 +2,8 @@ package com.jiuzhang.flashsale.service.impl;
 
 import javax.annotation.Resource;
 
+import com.jiuzhang.flashsale.service.RocketMQService;
+
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.Message;
@@ -10,7 +12,7 @@ import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RocketMQServiceImpl {
+public class RocketMQServiceImpl implements RocketMQService {
     @Resource
     RocketMQTemplate rocketMQTemplate;
 

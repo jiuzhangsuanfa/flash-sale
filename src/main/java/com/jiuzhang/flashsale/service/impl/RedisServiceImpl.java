@@ -4,6 +4,8 @@ import java.util.Collections;
 
 import javax.annotation.Resource;
 
+import com.jiuzhang.flashsale.service.RedisService;
+
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +14,7 @@ import redis.clients.jedis.JedisPool;
 
 @Slf4j
 @Service
-public class RedisServiceImpl {
+public class RedisServiceImpl implements RedisService {
 
     @Resource
     private JedisPool jedisPool;
