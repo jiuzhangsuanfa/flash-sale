@@ -1,16 +1,16 @@
 package com.jiuzhang.seckill.mapper;
 
-import com.jiuzhang.seckill.entity.Activity;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.annotation.Resource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import javax.annotation.Resource;
+
+import com.jiuzhang.seckill.entity.Activity;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class ActivityMapperTest {
@@ -31,7 +31,7 @@ class ActivityMapperTest {
         activity.setStartTime(LocalDateTime.now());
         activity.setEndTime(LocalDateTime.now());
         int result = activityMapper.insert(activity);
-        Assertions.assertEquals(1 ,result);
+        assertEquals(1, result);
     }
 
 }

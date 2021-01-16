@@ -1,11 +1,14 @@
 package com.jiuzhang.seckill;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+import java.util.Date;
+
 import com.jiuzhang.seckill.service.RocketMQService;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Date;
 
 @SpringBootTest
 public class MQTest {
@@ -14,9 +17,10 @@ public class MQTest {
     RocketMQService rocketMQService;
 
     @Test
-    public void sendMQTest() throws Exception {
-        rocketMQService.sendMessage("test-jiuzhang", "Hello World!" + new Date().toString());
+    void testSendMessage() {
+        assertDoesNotThrow(() -> {
+            rocketMQService.sendMessage("test-jiuzhang", "Hello World!" + new Date().toString());
+        });
     }
-
 
 }
