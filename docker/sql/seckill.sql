@@ -1,10 +1,10 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : Dev FlashSale
+ Source Server         : FlashSale
  Source Server Type    : MySQL
  Source Server Version : 50732
- Source Host           : dev.don.red:3306
+ Source Host           : localhost:3306
  Source Schema         : seckill
 
  Target Server Type    : MySQL
@@ -13,6 +13,9 @@
 
  Date: 15/01/2021 15:38:12
 */
+
+CREATE DATABASE IF NOT EXISTS `seckill` CHARACTER SET 'utf8mb4';
+USE `seckill`;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;

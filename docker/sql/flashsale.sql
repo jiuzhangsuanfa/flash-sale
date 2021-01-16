@@ -1,18 +1,21 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost_MySQL
+ Source Server         : FlashSale
  Source Server Type    : MySQL
- Source Server Version : 80021
+ Source Server Version : 50732
  Source Host           : localhost:3306
  Source Schema         : flashsale
 
  Target Server Type    : MySQL
- Target Server Version : 80021
+ Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 10/01/2021 10:25:18
+ Date: 15/01/2021 10:25:18
 */
+
+CREATE DATABASE IF NOT EXISTS `flashsale` CHARACTER SET 'utf8mb4';
+USE `flashsale`;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -25,8 +28,8 @@ CREATE TABLE `activity`  (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '秒杀活动ID',
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀活动名称',
   `commodity_id` bigint NOT NULL,
-  `old_price` decimal(10, 2) NOT NULL COMMENT '商品原价',
-  `seckill_price` decimal(10, 2) NOT NULL COMMENT '秒杀价格',
+  `origin_price` decimal(10, 2) NOT NULL COMMENT '商品原价',
+  `flashsale_price` decimal(10, 2) NOT NULL COMMENT '秒杀价格',
   `activity_status` tinyint NOT NULL DEFAULT 1 COMMENT '秒杀活动的状态，0:下架 1:正常',
   `start_time` datetime(0) NULL DEFAULT NULL COMMENT '活动开始时间',
   `end_time` datetime(0) NULL DEFAULT NULL COMMENT '活动结束时间',
@@ -71,7 +74,7 @@ DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order`  (
   `id` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `order_status` int NOT NULL,
-  `seckill_activity_id` bigint NOT NULL,
+  `activity_id` bigint NOT NULL,
   `user_id` bigint NOT NULL,
   `order_amount` decimal(10, 0) UNSIGNED NOT NULL,
   `create_time` datetime(0) NOT NULL,
