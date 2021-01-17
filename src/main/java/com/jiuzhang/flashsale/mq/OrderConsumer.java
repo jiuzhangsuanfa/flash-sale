@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import com.alibaba.fastjson.JSON;
 import com.jiuzhang.flashsale.entity.OrderEntity;
 import com.jiuzhang.flashsale.enums.OrderStatus;
+import com.jiuzhang.flashsale.exception.RedisUserException;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.OrderService;
 import com.jiuzhang.flashsale.service.impl.RedisServiceImpl;
@@ -44,8 +45,14 @@ public class OrderConsumer implements RocketMQListener<MessageExt> {
         if (lockStockResult) {
             // 订单状态
             order.setOrderStatus(OrderStatus.CREATED);
-            // 将用户加入到限购用户中
-            redisService.addLimitMember(order.getActivityId(), order.getUserId());
+            // 尝试将用户加入到限购用户中
+            try {
+                redisService.addRestrictedUser(order.getActivityId(), order.getUserId());
+            } catch (RedisUserException exception) {
+                // 如果失败则关闭订单，不允许购买
+                order.setOrderStatus(OrderStatus.CLOSED);
+                log.warn("用户" + order.getUserId() + "限购失败，禁止购买");
+            }
         } else {
             order.setOrderStatus(OrderStatus.NO_STOCK);
         }

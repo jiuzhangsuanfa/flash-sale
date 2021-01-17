@@ -2,6 +2,7 @@ package com.jiuzhang.flashsale.controller;
 
 import javax.annotation.Resource;
 
+import com.jiuzhang.flashsale.exception.RedisStockException;
 import com.jiuzhang.flashsale.service.ActivityService;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,8 +47,9 @@ public class OverSellController {
      *
      * @param activityId 秒杀活动 ID
      * @return 处理结果
+     * @throws RedisStockException
      */
-    public boolean processLua(long activityId) {
+    public boolean processLua(long activityId) throws RedisStockException {
         return activityService.hasStock(activityId);
     }
 

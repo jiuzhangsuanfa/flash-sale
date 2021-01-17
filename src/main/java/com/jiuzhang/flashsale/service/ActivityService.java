@@ -5,6 +5,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jiuzhang.flashsale.entity.ActivityEntity;
 import com.jiuzhang.flashsale.enums.ActivityStatus;
+import com.jiuzhang.flashsale.exception.RedisStockException;
 
 /**
  * 秒杀活动服务
@@ -35,8 +36,9 @@ public interface ActivityService extends IService<ActivityEntity> {
      *
      * @param activityId 活动 ID
      * @return 返回是否有库存
+     * @throws RedisStockException
      */
-    boolean hasStock(long activityId);
+    boolean hasStock(long activityId) throws RedisStockException;
 
     /**
      * 锁定库存

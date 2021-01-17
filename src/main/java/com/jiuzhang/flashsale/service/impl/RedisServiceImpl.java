@@ -4,104 +4,62 @@ import java.util.Collections;
 
 import javax.annotation.Resource;
 
+import com.jiuzhang.flashsale.exception.RedisDistributedLockException;
+import com.jiuzhang.flashsale.exception.RedisStockException;
+import com.jiuzhang.flashsale.exception.RedisUserException;
 import com.jiuzhang.flashsale.service.RedisService;
 
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-@Slf4j
 @Service
 public class RedisServiceImpl implements RedisService {
+
+    private static final String STOCK_KEY = "stock:";
 
     @Resource
     private JedisPool jedisPool;
 
-    /**
-     * 添加限购名单
-     *
-     * @param activityId
-     * @param userId
-     */
-    public void addLimitMember(long activityId, long userId) {
-        Jedis jedisClient = jedisPool.getResource();
-        jedisClient.sadd("activity_users:" + activityId, String.valueOf(userId));
-        jedisClient.close();
+    @Override
+    public void addRestrictedUser(Long activityId, Long userId) throws RedisUserException {
+        try (Jedis jedisClient = jedisPool.getResource()) {
+            jedisClient.sadd("activity_users:" + activityId, String.valueOf(userId));
+        } catch (Exception exception) {
+            throw new RedisUserException(activityId, userId, exception.getMessage());
+        }
     }
 
-    /**
-     * 判断是否在限购名单中
-     *
-     * @param activityId
-     * @param userId
-     * @return
-     */
-    public boolean isInLimitMember(long activityId, long userId) {
-        Jedis jedisClient = jedisPool.getResource();
-        boolean sismember = jedisClient.sismember("seckillActivity_users:" + activityId, String.valueOf(userId));
-        jedisClient.close();
-        log.info("userId:{}  activityId:{}  在已购名单中:{}", userId, activityId, sismember);
-        return sismember;
+    @Override
+    public boolean isRestrictedUser(Long activityId, Long userId) throws RedisUserException {
+        try (Jedis jedisClient = jedisPool.getResource()) {
+            return jedisClient.sismember("seckillActivity_users:" + activityId, String.valueOf(userId));
+        } catch (Exception exception) {
+            throw new RedisUserException(activityId, userId, exception.getMessage());
+        }
     }
 
-    /**
-     * 移除限购名单
-     *
-     * @param activityId
-     * @param userId
-     */
-    public void removeLimitMember(long activityId, long userId) {
-        Jedis jedisClient = jedisPool.getResource();
-        jedisClient.srem("seckillActivity_users:" + activityId, String.valueOf(userId));
-        jedisClient.close();
+    @Override
+    public void removeRestrictedUser(Long activityId, Long userId) throws RedisUserException {
+        try (Jedis jedisClient = jedisPool.getResource()) {
+            jedisClient.srem("seckillActivity_users:" + activityId, String.valueOf(userId));
+        } catch (Exception exception) {
+            throw new RedisUserException(activityId, userId, exception.getMessage());
+        }
     }
 
-    /**
-     * 超时未支付 Redis 库存回滚
-     *
-     * @param key
-     */
-    public void revertStock(String key) {
-        Jedis jedisClient = jedisPool.getResource();
-        jedisClient.incr(key);
-        jedisClient.close();
+    @Override
+    public void revertStock(Long activityId) throws RedisStockException {
+        try (Jedis jedisClient = jedisPool.getResource()) {
+            jedisClient.incr(STOCK_KEY + activityId);
+        } catch (Exception exception) {
+            throw new RedisStockException(activityId, exception.getMessage());
+        }
     }
 
-    /**
-     * 设置值
-     *
-     * @param key
-     * @param value
-     */
-    public void setValue(String key, Object value) {
-        Jedis jedisClient = jedisPool.getResource();
-        jedisClient.set(key, value.toString());
-        jedisClient.close();
-    }
-
-    /**
-     * 获取值
-     *
-     * @param key
-     * @return
-     */
-    public String getValue(String key) {
-        Jedis jedisClient = jedisPool.getResource();
-        String value = jedisClient.get(key);
-        jedisClient.close();
-        return value;
-    }
-
-    /**
-     * 缓存中库存判断和扣减
-     *
-     * @param key
-     * @return
-     * @throws Exception
-     */
-    public boolean stockDeductValidator(String key) {
+    @Override
+    public boolean deductStock(Long activityId) throws RedisStockException {
         try (Jedis jedisClient = jedisPool.getResource()) {
             String script = "if redis.call('exists',KEYS[1]) == 1 then\n"
                     + "                 local stock = tonumber(redis.call('get', KEYS[1]))\n"
@@ -109,47 +67,59 @@ public class RedisServiceImpl implements RedisService {
                     + "                 end;\n" + "                 redis.call('decr',KEYS[1]);\n"
                     + "                 return stock - 1;\n" + "             end;\n" + "             return -1;";
 
-            Long stock = (Long) jedisClient.eval(script, Collections.singletonList(key), Collections.emptyList());
-            if (stock < 0) {
-                log.error("库存不足");
-                return false;
-            }
-            log.info("恭喜，抢购成功");
-            return true;
+            Long stock = (Long) jedisClient.eval(script, Collections.singletonList(STOCK_KEY + activityId),
+                    Collections.emptyList());
+            return stock >= 0;
         } catch (Exception exception) {
-            log.error("库存扣减失败：" + exception.toString());
-            return false;
+            throw new RedisStockException(activityId, exception.getMessage());
         }
     }
 
-    /**
-     * 获取分布式锁
-     *
-     * @param lockKey
-     * @param requestId
-     * @param expireTime
-     * @return
-     */
-    public boolean tryGetDistributedLock(String lockKey, String requestId, int expireTime) {
-        Jedis jedisClient = jedisPool.getResource();
-        String result = jedisClient.set(lockKey, requestId, "NX", "PX", expireTime);
-        jedisClient.close();
-        return "OK".equals(result);
+    @Override
+    public void setStock(Long activityId, Long availableStock) throws RedisStockException {
+        try (Jedis jedisClient = jedisPool.getResource()) {
+            jedisClient.set(STOCK_KEY + activityId, String.valueOf(availableStock));
+        } catch (Exception exception) {
+            throw new RedisStockException(activityId, exception.getMessage());
+        }
     }
 
-    /**
-     * 释放分布式锁
-     *
-     * @param lockKey   锁
-     * @param requestId 请求标识
-     * @return 是否释放成功
-     */
-    public boolean releaseDistributedLock(String lockKey, String requestId) {
-        Jedis jedisClient = jedisPool.getResource();
-        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-        Long result = (Long) jedisClient.eval(script, Collections.singletonList(lockKey),
-                Collections.singletonList(requestId));
-        jedisClient.close();
-        return result == 1L;
+    @Override
+    public String getStock(Long activityId) throws RedisStockException {
+        try (Jedis jedisClient = jedisPool.getResource()) {
+            return jedisClient.get(STOCK_KEY + activityId);
+        } catch (Exception exception) {
+            throw new RedisStockException(activityId, exception.getMessage());
+        }
     }
+
+    @Override
+    public void takeUpDistributedLock(String lockKey, String requestId, int expireTime)
+            throws RedisDistributedLockException {
+        try (Jedis jedisClient = jedisPool.getResource()) {
+            boolean success = "OK".equals(jedisClient.set(lockKey, requestId, "NX", "PX", expireTime));
+            if (!success) {
+                throw new RedisDistributedLockException(lockKey, requestId, "take up redis distributed lock failed");
+            }
+        } catch (RedisDistributedLockException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw new RedisDistributedLockException(lockKey, requestId, exception.getMessage());
+        }
+    }
+
+    @Override
+    public void releaseDistributedLock(String lockKey, String requestId) throws RedisDistributedLockException {
+        try (Jedis jedisClient = jedisPool.getResource()) {
+            String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+            Long result = (Long) jedisClient.eval(script, Collections.singletonList(lockKey),
+                    Collections.singletonList(requestId));
+            if (result != 1) {
+                throw new RedisDistributedLockException(lockKey, requestId, "release redis distributed lock failed");
+            }
+        } catch (Exception exception) {
+            throw new RedisDistributedLockException(lockKey, requestId, exception.getMessage());
+        }
+    }
+
 }
