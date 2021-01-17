@@ -102,7 +102,7 @@ public class OrderController {
     @PostMapping("{id}")
     public String payOrder(@PathVariable String id)
             throws OrderNotExistException, OrderInvalidException, OrderPayException {
-        orderService.payOrderProcess(id);
+        orderService.payOrder(id);
         return "redirect:/orders/orderQuery/" + id;
     }
 

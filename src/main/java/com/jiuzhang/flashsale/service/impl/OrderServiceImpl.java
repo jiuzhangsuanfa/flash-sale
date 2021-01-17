@@ -23,12 +23,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * 秒杀订单服务
- *
- * @author jiuzhang
- * @since 2021-01-15
- */
 @Slf4j
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> implements OrderService {
@@ -40,9 +34,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     private RocketMQServiceImpl rocketMQService;
 
     /**
-     * datacenterId 数据中心
+     * 雪花算法生成器，调用 nextId() 获取下一个 ID
      *
-     * machineId 机器标识，在分布式环境中可以从机器配置上读取，单机开发环境中可以写成常量
+     * @param datacenterId 数据中心
+     * @param machineId    机器标识，在分布式环境中可以从机器配置上读取，单机开发环境中可以写成常量
      */
     private final SnowFlake snowFlake = new SnowFlake(1, 1);
 
@@ -73,16 +68,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         return order;
     }
 
-    /**
-     * 支付订单处理
-     *
-     * @param orderId 订单 ID
-     * @throws OrderPayException
-     */
     @Override
-    public OrderEntity payOrderProcess(String orderId)
+    public OrderEntity payOrder(String orderId)
             throws OrderNotExistException, OrderInvalidException, OrderPayException {
-        log.info("完成支付订单，订单号：" + orderId);
+        log.info("支付订单中，订单号：" + orderId);
         OrderEntity order = baseMapper.selectById(orderId);
         // 1. 判断订单是否存在
         // 2. 判断订单状态是否为未支付状态
@@ -108,6 +97,24 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         } catch (Exception e) {
             throw new OrderPayException(orderId);
         }
+        return order;
+    }
+
+    @Override
+    public OrderEntity closeOrder(String orderId) throws OrderNotExistException, OrderInvalidException {
+        log.info("支付订单中，订单号：" + orderId);
+        OrderEntity order = baseMapper.selectById(orderId);
+        // 1. 判断订单是否存在
+        // 2. 判断订单状态是否为未支付状态
+        if (order == null) {
+            log.error("订单号对应订单不存在：" + orderId);
+            throw new OrderNotExistException(orderId);
+        }
+        if (order.getOrderStatus() != OrderStatus.CREATED) {
+            log.error("订单状态无效：" + orderId);
+            throw new OrderInvalidException(orderId);
+        }
+        order.setOrderStatus(OrderStatus.CLOSED);
         return order;
     }
 
