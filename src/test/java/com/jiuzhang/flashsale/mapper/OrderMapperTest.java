@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import javax.annotation.Resource;
 
 import com.jiuzhang.flashsale.entity.OrderEntity;
+import com.jiuzhang.flashsale.enums.OrderStatus;
 import com.jiuzhang.flashsale.util.SnowFlake;
 
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ class OrderMapperTest {
         order.setActivityId(2L);
         order.setUserId((long) 12345);
         order.setOrderAmount(new BigDecimal(123456.34));
-        order.setOrderStatus(1);
+        order.setOrderStatus(OrderStatus.CREATED);
         order.setCreateTime(LocalDateTime.now());
         assertEquals(1, orderMapper.insert(order));
     }

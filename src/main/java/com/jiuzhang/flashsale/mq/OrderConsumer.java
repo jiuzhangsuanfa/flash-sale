@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSON;
 import com.jiuzhang.flashsale.entity.OrderEntity;
+import com.jiuzhang.flashsale.enums.OrderStatus;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.OrderService;
 import com.jiuzhang.flashsale.service.impl.RedisServiceImpl;
@@ -41,12 +42,12 @@ public class OrderConsumer implements RocketMQListener<MessageExt> {
         // 2.扣减库存
         boolean lockStockResult = activityService.lockStock(order.getActivityId());
         if (lockStockResult) {
-            // 订单状态 0:没有可用库存，无效订单 1:已创建等待付款
-            order.setOrderStatus(1);
+            // 订单状态
+            order.setOrderStatus(OrderStatus.CREATED);
             // 将用户加入到限购用户中
             redisService.addLimitMember(order.getActivityId(), order.getUserId());
         } else {
-            order.setOrderStatus(0);
+            order.setOrderStatus(OrderStatus.NO_STOCK);
         }
         // 3.插入订单
         orderService.save(order);

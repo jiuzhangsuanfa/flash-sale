@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.jiuzhang.flashsale.enums.OrderStatus;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,7 +28,7 @@ public class OrderEntity implements Serializable {
     @TableId(type = IdType.INPUT)
     private String id;
 
-    private Integer orderStatus;
+    private OrderStatus orderStatus;
 
     private Long activityId;
 

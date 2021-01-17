@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jiuzhang.flashsale.entity.ActivityEntity;
 import com.jiuzhang.flashsale.entity.OrderEntity;
+import com.jiuzhang.flashsale.enums.OrderStatus;
 import com.jiuzhang.flashsale.exception.OrderCreateException;
 import com.jiuzhang.flashsale.exception.OrderInvalidException;
 import com.jiuzhang.flashsale.exception.OrderNotExistException;
@@ -23,9 +24,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * <p>
- * 服务实现类
- * </p>
+ * 秒杀订单服务
  *
  * @author jiuzhang
  * @since 2021-01-15
@@ -91,7 +90,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
             log.error("订单号对应订单不存在：" + orderId);
             throw new OrderNotExistException(orderId);
         }
-        if (order.getOrderStatus() != 1) {
+        if (order.getOrderStatus() != OrderStatus.CREATED) {
             log.error("订单状态无效：" + orderId);
             throw new OrderInvalidException(orderId);
         }
@@ -101,7 +100,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         // 0 没有可用库存，无效订单
         // 1 已创建等待付款
         // 2 支付完成
-        order.setOrderStatus(2);
+        order.setOrderStatus(OrderStatus.PAID);
         baseMapper.updateById(order);
         // 3. 发送订单付款成功消息
         try {
@@ -111,4 +110,5 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         }
         return order;
     }
+
 }
