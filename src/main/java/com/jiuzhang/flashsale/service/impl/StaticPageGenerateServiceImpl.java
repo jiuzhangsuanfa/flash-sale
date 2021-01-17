@@ -7,7 +7,8 @@ import java.util.Map;
 
 import com.jiuzhang.flashsale.entity.ActivityEntity;
 import com.jiuzhang.flashsale.entity.CommodityEntity;
-import com.jiuzhang.flashsale.service.ActivityHtmlPageService;
+import com.jiuzhang.flashsale.exception.StaticPageGenerateException;
+import com.jiuzhang.flashsale.service.StaticPageGenerateService;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.CommodityService;
 
@@ -20,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class ActivityHtmlPageServiceImpl implements ActivityHtmlPageService {
+public class StaticPageGenerateServiceImpl implements StaticPageGenerateService {
 
     @Autowired
     private TemplateEngine templateEngine;
@@ -31,12 +32,7 @@ public class ActivityHtmlPageServiceImpl implements ActivityHtmlPageService {
     @Autowired
     private CommodityService commodityService;
 
-    /**
-     * 创建html页面
-     *
-     * @throws Exception
-     */
-    public void createActivityHtml(long activityId) {
+    public void generateActivityStaticPage(long activityId) throws StaticPageGenerateException {
 
         try (PrintWriter writer = new PrintWriter(
                 new File("src/main/resources/templates/" + "seckill_item_" + activityId + ".html"))) {
@@ -52,9 +48,10 @@ public class ActivityHtmlPageServiceImpl implements ActivityHtmlPageService {
             context.setVariables(resultMap);
             // 执行页面静态化方法
             templateEngine.process("seckill_item", context, writer);
-        } catch (Exception e) {
-            log.error(e.toString());
-            log.error("页面静态化出错：" + activityId);
+        } catch (Exception exception) {
+            String message = "活动页面静态化出错：" + activityId;
+            log.error(message);
+            throw new StaticPageGenerateException(message);
         }
 
     }
