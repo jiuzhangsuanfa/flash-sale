@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.jiuzhang.flashsale.enums.ActivityStatus;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,9 +14,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * <p>
- *
- * </p>
+ * 秒杀活动 Entity
  *
  * @author jiuzhang
  * @since 2021-01-15
@@ -46,9 +45,9 @@ public class ActivityEntity implements Serializable {
     private BigDecimal seckillPrice;
 
     /**
-     * 秒杀活动的状态，0:下架 1:正常
+     * 秒杀活动的状态 0 正常 1 结束
      */
-    private Integer activityStatus;
+    private ActivityStatus activityStatus;
 
     /**
      * 活动开始时间

@@ -22,6 +22,7 @@ spring:
 
 mybatis-plus: # MyBatis Plus Mapper Config
     mapper-locations: classpath:mapper/*.xml
+    type-enums-package: com.jiuzhang.flashsale.enums
 
 rocketmq: # RocketMQ Config
     name-server: localhost:9876 # Name Server Config
