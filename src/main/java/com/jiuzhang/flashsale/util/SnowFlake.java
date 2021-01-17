@@ -1,14 +1,6 @@
 package com.jiuzhang.flashsale.util;
 
-class SnowFlakeGenerateException extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
-    SnowFlakeGenerateException(String message) {
-        super(message);
-    }
-
-}
+import com.jiuzhang.flashsale.exception.SnowFlakeGenerateException;
 
 /**
  * Twitter 的分布式自增 ID 雪花算法 SnowFlake
@@ -58,7 +50,7 @@ public class SnowFlake {
     }
 
     /**
-     * 产生下一个ID
+     * 产生下一个 ID
      *
      * @return
      */
