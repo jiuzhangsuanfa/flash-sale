@@ -8,9 +8,7 @@ import com.jiuzhang.flashsale.service.CommodityService;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
- * 服务实现类
- * </p>
+ * 商品信息服务
  *
  * @author jiuzhang
  * @since 2021-01-15

@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.jiuzhang.flashsale.entity.CommodityEntity;
 
 /**
- * <p>
- * 服务类
- * </p>
+ * 商品信息服务
  *
  * @author jiuzhang
  * @since 2021-01-15
