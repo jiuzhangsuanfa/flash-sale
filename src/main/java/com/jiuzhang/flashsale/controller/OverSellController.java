@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 超卖演示
+ *
+ * @author jiuzhang
+ * @since 2021-01-15
+ */
 @RestController
 @RequestMapping("oversell")
 public class OverSellController {
@@ -18,7 +24,7 @@ public class OverSellController {
     ActivityService activityService;
 
     @PostMapping("{id}")
-    public boolean oversell(@PathVariable long activityId, @RequestParam String type) {
+    public boolean oversell(@PathVariable long activityId, @RequestParam(required = false) String type) {
         if (type.equals("OVERSELL")) {
             return this.processOverSell(activityId);
         }

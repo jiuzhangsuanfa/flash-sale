@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import com.jiuzhang.flashsale.entity.ActivityEntity;
 import com.jiuzhang.flashsale.entity.CommodityEntity;
+import com.jiuzhang.flashsale.enums.ActivityStatus;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.CommodityService;
 
@@ -16,15 +17,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * 秒杀活动
+ *
+ * @author jiuzhang
+ * @since 2021-01-15
+ */
 @Controller
 @RequestMapping("activities")
 public class ActivityController {
 
     @Resource
-    ActivityService activityService;
+    private ActivityService activityService;
 
     @Resource
-    CommodityService commodityService;
+    private CommodityService commodityService;
 
     /**
      * 查询活动详情
@@ -67,7 +74,7 @@ public class ActivityController {
     public String addActivity(ActivityEntity activity, Map<String, Object> resultMap) {
         activity.setAvailableStock(activity.getTotalStock());
         activity.setLockStock(0L);
-        activity.setActivityStatus(1);
+        activity.setActivityStatus(ActivityStatus.NORMAL);
         activityService.save(activity);
         resultMap.put("activity", activity);
         return "add_success";
@@ -82,4 +89,5 @@ public class ActivityController {
     public String addSeckillActivity() {
         return "add_activity";
     }
+
 }

@@ -22,9 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * <p>
- * 前端控制器
- * </p>
+ * 秒杀订单
  *
  * @author jiuzhang
  * @since 2021-01-15
@@ -33,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("orders")
 public class OrderController {
+
     @Resource
     RedisServiceImpl redisService;
 
@@ -106,4 +105,5 @@ public class OrderController {
         orderService.payOrderProcess(id);
         return "redirect:/orders/orderQuery/" + id;
     }
+
 }

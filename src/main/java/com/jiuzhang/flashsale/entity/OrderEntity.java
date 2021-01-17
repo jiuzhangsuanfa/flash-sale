@@ -12,9 +12,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * <p>
- *
- * </p>
+ * 秒杀订单 Entity
  *
  * @author jiuzhang
  * @since 2021-01-15

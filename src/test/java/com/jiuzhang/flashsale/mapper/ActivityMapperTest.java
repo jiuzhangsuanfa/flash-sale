@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import javax.annotation.Resource;
 
 import com.jiuzhang.flashsale.entity.ActivityEntity;
+import com.jiuzhang.flashsale.enums.ActivityStatus;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +23,7 @@ class ActivityMapperTest {
         ActivityEntity activity = new ActivityEntity();
         activity.setName("测试");
         activity.setCommodityId(1L);
-        activity.setActivityStatus(1);
+        activity.setActivityStatus(ActivityStatus.NORMAL);
         activity.setSeckillPrice(new BigDecimal(99));
         activity.setOldPrice(new BigDecimal(99));
         activity.setTotalStock(100L);

@@ -12,6 +12,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+/** 商品预热，从数据库到 Redis 缓存 */
 @Component
 public class RedisPreheatRunner implements ApplicationRunner {
 
@@ -25,7 +26,6 @@ public class RedisPreheatRunner implements ApplicationRunner {
      * 将商品库存同步到 redis 中
      *
      * @param args
-     * @throws Exception
      */
     @Override
     public void run(ApplicationArguments args) {
