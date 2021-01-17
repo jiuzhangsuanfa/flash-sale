@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jiuzhang.flashsale.entity.Activity;
+import com.jiuzhang.flashsale.entity.ActivityEntity;
 import com.jiuzhang.flashsale.mapper.ActivityMapper;
 import com.jiuzhang.flashsale.service.ActivityService;
 
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
  * @since 2021-01-15
  */
 @Service
-public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> implements ActivityService {
+public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEntity> implements ActivityService {
 
     @Resource
     RedisServiceImpl redisService;
@@ -34,7 +34,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
      * @return 所有状态相同的活动
      */
     @Override
-    public List<Activity> getActivitiesByStatus(Integer activityStatus) {
+    public List<ActivityEntity> getActivitiesByStatus(Integer activityStatus) {
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("activity_status", activityStatus);
         return baseMapper.selectByMap(columnMap);
@@ -48,7 +48,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
      */
     @Override
     public boolean processOverSell(long activityId) {
-        Activity activity = baseMapper.selectById(activityId);
+        ActivityEntity activity = baseMapper.selectById(activityId);
         long availableStock = activity.getAvailableStock();
         if (availableStock > 0) {
             availableStock = availableStock - 1;

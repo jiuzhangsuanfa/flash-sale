@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSON;
-import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.entity.OrderEntity;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.OrderService;
 import com.jiuzhang.flashsale.service.impl.RedisServiceImpl;
@@ -36,7 +36,7 @@ public class OrderConsumer implements RocketMQListener<MessageExt> {
         // 1.解析创建订单请求消息
         String message = new String(messageExt.getBody(), StandardCharsets.UTF_8);
         log.info("接收到创建订单请求：" + message);
-        Order order = JSON.parseObject(message, Order.class);
+        OrderEntity order = JSON.parseObject(message, OrderEntity.class);
         order.setCreateTime(LocalDateTime.now());
         // 2.扣减库存
         boolean lockStockResult = activityService.lockStock(order.getActivityId());

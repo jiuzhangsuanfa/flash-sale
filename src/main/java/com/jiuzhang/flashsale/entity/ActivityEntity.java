@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Activity implements Serializable {
+public class ActivityEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

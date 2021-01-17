@@ -5,8 +5,8 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jiuzhang.flashsale.entity.Activity;
-import com.jiuzhang.flashsale.entity.Commodity;
+import com.jiuzhang.flashsale.entity.ActivityEntity;
+import com.jiuzhang.flashsale.entity.CommodityEntity;
 import com.jiuzhang.flashsale.service.ActivityHtmlPageService;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.CommodityService;
@@ -40,8 +40,8 @@ public class ActivityHtmlPageServiceImpl implements ActivityHtmlPageService {
 
         try (PrintWriter writer = new PrintWriter(
                 new File("src/main/resources/templates/" + "seckill_item_" + activityId + ".html"))) {
-            Activity activity = activityService.getById(activityId);
-            Commodity commodity = commodityService.getById(activity.getCommodityId());
+            ActivityEntity activity = activityService.getById(activityId);
+            CommodityEntity commodity = commodityService.getById(activity.getCommodityId());
             // 获取页面数据
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("activity", activity);

@@ -2,8 +2,8 @@ package com.jiuzhang.flashsale.controller;
 
 import javax.annotation.Resource;
 
-import com.jiuzhang.flashsale.entity.Activity;
-import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.entity.ActivityEntity;
+import com.jiuzhang.flashsale.entity.OrderEntity;
 import com.jiuzhang.flashsale.exception.OrderInvalidException;
 import com.jiuzhang.flashsale.exception.OrderNotExistException;
 import com.jiuzhang.flashsale.exception.OrderPayException;
@@ -57,7 +57,7 @@ public class OrderController {
             /** 确认是否能够进行秒杀 */
             stockValidateResult = activityService.hasStock(activityId);
             if (stockValidateResult) {
-                Order order = orderService.createOrder(activityId, 1234);
+                OrderEntity order = orderService.createOrder(activityId, 1234);
                 modelAndView.addObject(infoName, "秒杀成功，订单创建中，订单ID：" + order.getId());
                 modelAndView.addObject("orderId", order.getId());
             } else {
@@ -80,12 +80,12 @@ public class OrderController {
     @GetMapping("{id}")
     public ModelAndView orderQuery(@PathVariable String id) {
         log.info("订单查询，订单号：" + id);
-        Order order = orderService.getById(id);
+        OrderEntity order = orderService.getById(id);
         ModelAndView modelAndView = new ModelAndView();
         if (order != null) {
             modelAndView.setViewName("order");
             modelAndView.addObject("order", order);
-            Activity activity = activityService.getById(order.getActivityId());
+            ActivityEntity activity = activityService.getById(order.getActivityId());
             modelAndView.addObject("activity", activity);
         } else {
             modelAndView.setViewName("order_wait");

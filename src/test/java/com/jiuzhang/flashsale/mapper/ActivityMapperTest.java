@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import javax.annotation.Resource;
 
-import com.jiuzhang.flashsale.entity.Activity;
+import com.jiuzhang.flashsale.entity.ActivityEntity;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +19,7 @@ class ActivityMapperTest {
 
     @Test
     void testInsert() {
-        Activity activity = new Activity();
+        ActivityEntity activity = new ActivityEntity();
         activity.setName("测试");
         activity.setCommodityId(1L);
         activity.setActivityStatus(1);

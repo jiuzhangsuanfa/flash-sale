@@ -5,8 +5,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.jiuzhang.flashsale.entity.Activity;
-import com.jiuzhang.flashsale.entity.Commodity;
+import com.jiuzhang.flashsale.entity.ActivityEntity;
+import com.jiuzhang.flashsale.entity.CommodityEntity;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.CommodityService;
 
@@ -35,8 +35,8 @@ public class ActivityController {
      */
     @GetMapping("{id}")
     public String itemPage(Map<String, Object> resultMap, @PathVariable long id) {
-        Activity activity = activityService.getById(id);
-        Commodity commodity = commodityService.getById(activity.getCommodityId());
+        ActivityEntity activity = activityService.getById(id);
+        CommodityEntity commodity = commodityService.getById(activity.getCommodityId());
         resultMap.put("activity", activity);
         resultMap.put("commodity", commodity);
         return "seckill_item";
@@ -51,7 +51,7 @@ public class ActivityController {
     @GetMapping
     public String activitys(Map<String, Object> resultMap) {
         // 获取活动状态为 1 的活动
-        List<Activity> activityList = activityService.getActivitiesByStatus(1);
+        List<ActivityEntity> activityList = activityService.getActivitiesByStatus(1);
         resultMap.put("activityList", activityList);
         return "activity_list";
     }
@@ -64,7 +64,7 @@ public class ActivityController {
      * @return 添加成功的页面
      */
     @PostMapping
-    public String addActivity(Activity activity, Map<String, Object> resultMap) {
+    public String addActivity(ActivityEntity activity, Map<String, Object> resultMap) {
         activity.setAvailableStock(activity.getTotalStock());
         activity.setLockStock(0L);
         activity.setActivityStatus(1);

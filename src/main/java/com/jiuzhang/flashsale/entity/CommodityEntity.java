@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Commodity implements Serializable {
+public class CommodityEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)

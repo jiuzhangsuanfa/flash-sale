@@ -1,7 +1,7 @@
 package com.jiuzhang.flashsale.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jiuzhang.flashsale.entity.Commodity;
+import com.jiuzhang.flashsale.entity.CommodityEntity;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jiuzhang.flashsale.entity.Commodity;
  * @author jiuzhang
  * @since 2021-01-15
  */
-public interface CommodityMapper extends BaseMapper<Commodity> {
+public interface CommodityMapper extends BaseMapper<CommodityEntity> {
 
 }

@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSON;
-import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.entity.OrderEntity;
 import com.jiuzhang.flashsale.service.ActivityService;
 
 import org.apache.rocketmq.common.message.MessageExt;
@@ -33,7 +33,7 @@ public class PayDoneConsumer implements RocketMQListener<MessageExt> {
         // 1.解析创建订单请求消息
         String message = new String(messageExt.getBody(), StandardCharsets.UTF_8);
         log.info("接收到创建订单请求：" + message);
-        Order order = JSON.parseObject(message, Order.class);
+        OrderEntity order = JSON.parseObject(message, OrderEntity.class);
         // 2.扣减库存
         activityService.deductStock(order.getActivityId());
     }

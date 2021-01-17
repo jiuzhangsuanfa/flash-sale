@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @TableName("`order`")
 @EqualsAndHashCode(callSuper = false)
-public class Order implements Serializable {
+public class OrderEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

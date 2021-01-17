@@ -1,7 +1,7 @@
 package com.jiuzhang.flashsale.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.entity.OrderEntity;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.jiuzhang.flashsale.entity.Order;
  * @author jiuzhang
  * @since 2021-01-15
  */
-public interface OrderMapper extends BaseMapper<Order> {
+public interface OrderMapper extends BaseMapper<OrderEntity> {
 
 }

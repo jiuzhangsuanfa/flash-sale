@@ -3,7 +3,7 @@ package com.jiuzhang.flashsale.service;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jiuzhang.flashsale.entity.Activity;
+import com.jiuzhang.flashsale.entity.ActivityEntity;
 
 /**
  * <p>
@@ -13,9 +13,9 @@ import com.jiuzhang.flashsale.entity.Activity;
  * @author jiuzhang
  * @since 2021-01-15
  */
-public interface ActivityService extends IService<Activity> {
+public interface ActivityService extends IService<ActivityEntity> {
 
-    List<Activity> getActivitiesByStatus(Integer activityStatus);
+    List<ActivityEntity> getActivitiesByStatus(Integer activityStatus);
 
     boolean processOverSell(long activityId);
 

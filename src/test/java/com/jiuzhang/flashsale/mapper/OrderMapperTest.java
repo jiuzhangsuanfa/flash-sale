@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import javax.annotation.Resource;
 
-import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.entity.OrderEntity;
 import com.jiuzhang.flashsale.util.SnowFlake;
 
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class OrderMapperTest {
 
     @Test
     void testInsert() {
-        Order order = new Order();
+        OrderEntity order = new OrderEntity();
         order.setId(new SnowFlake(1, 1).nextId() + "");
         order.setActivityId(2L);
         order.setUserId((long) 12345);

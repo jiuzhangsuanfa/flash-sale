@@ -6,8 +6,8 @@ import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jiuzhang.flashsale.entity.Activity;
-import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.entity.ActivityEntity;
+import com.jiuzhang.flashsale.entity.OrderEntity;
 import com.jiuzhang.flashsale.exception.OrderCreateException;
 import com.jiuzhang.flashsale.exception.OrderInvalidException;
 import com.jiuzhang.flashsale.exception.OrderNotExistException;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
+public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> implements OrderService {
 
     @Resource
     ActivityMapper activityMapper;
@@ -48,10 +48,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private final SnowFlake snowFlake = new SnowFlake(1, 1);
 
     @Override
-    public Order createOrder(long activityId, int userId) throws OrderCreateException, OrderPayCheckException {
-        Activity activity = activityMapper.selectById(activityId);
+    public OrderEntity createOrder(long activityId, int userId) throws OrderCreateException, OrderPayCheckException {
+        ActivityEntity activity = activityMapper.selectById(activityId);
         // 1. 创建订单
-        Order order = new Order();
+        OrderEntity order = new OrderEntity();
         order.setId(snowFlake.nextId() + "");
         order.setActivityId(activityId);
         order.setUserId((long) userId);
@@ -81,10 +81,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @throws OrderPayException
      */
     @Override
-    public Order payOrderProcess(String orderId)
+    public OrderEntity payOrderProcess(String orderId)
             throws OrderNotExistException, OrderInvalidException, OrderPayException {
         log.info("完成支付订单，订单号：" + orderId);
-        Order order = baseMapper.selectById(orderId);
+        OrderEntity order = baseMapper.selectById(orderId);
         // 1. 判断订单是否存在
         // 2. 判断订单状态是否为未支付状态
         if (order == null) {

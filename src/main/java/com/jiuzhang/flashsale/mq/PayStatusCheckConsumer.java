@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSON;
-import com.jiuzhang.flashsale.entity.Order;
+import com.jiuzhang.flashsale.entity.OrderEntity;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.OrderService;
 import com.jiuzhang.flashsale.service.impl.RedisServiceImpl;
@@ -37,9 +37,9 @@ public class PayStatusCheckConsumer implements RocketMQListener<MessageExt> {
     public void onMessage(MessageExt messageExt) {
         String message = new String(messageExt.getBody(), StandardCharsets.UTF_8);
         log.info("接收到订单支付状态校验消息:" + message);
-        Order order = JSON.parseObject(message, Order.class);
+        OrderEntity order = JSON.parseObject(message, OrderEntity.class);
         // 1.查询订单
-        Order orderInfo = orderService.getById(order.getId());
+        OrderEntity orderInfo = orderService.getById(order.getId());
         // 2.判读订单是否完成支付
         if (orderInfo.getOrderStatus() != 2) {
             // 3.未完成支付关闭订单
