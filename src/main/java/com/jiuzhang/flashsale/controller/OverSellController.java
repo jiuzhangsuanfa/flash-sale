@@ -38,7 +38,7 @@ public class OverSellController {
      * @return 处理结果
      */
     public boolean processOverSell(long activityId) {
-        return activityService.processOverSell(activityId);
+        return activityService.oversellStock(activityId);
     }
 
     /**

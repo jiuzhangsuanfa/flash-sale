@@ -57,8 +57,8 @@ public class ActivityController {
      */
     @GetMapping
     public String activitys(Map<String, Object> resultMap) {
-        // 获取活动状态为 1 的活动
-        List<ActivityEntity> activityList = activityService.getActivitiesByStatus(1);
+        // 获取状态正常的秒杀活动
+        List<ActivityEntity> activityList = activityService.getActivitiesByStatus(ActivityStatus.NORMAL);
         resultMap.put("activityList", activityList);
         return "activity_list";
     }
