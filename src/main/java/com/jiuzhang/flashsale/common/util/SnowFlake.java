@@ -1,4 +1,4 @@
-package com.jiuzhang.flashsale.util;
+package com.jiuzhang.flashsale.common.util;
 
 import com.jiuzhang.flashsale.exception.SnowFlakeGenerateException;
 
