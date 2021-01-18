@@ -15,6 +15,7 @@ public class RocketMQServiceImpl implements RocketMQService {
     @Resource
     RocketMQTemplate rocketMQTemplate;
 
+    @Override
     public void sendMessage(String topic, String body) throws MQException {
         try {
             Message message = new Message(topic, body.getBytes());
@@ -24,6 +25,7 @@ public class RocketMQServiceImpl implements RocketMQService {
         }
     }
 
+    @Override
     public void sendDelayMessage(String topic, String body, int delayTimeLevel) throws MQException {
         try {
             Message message = new Message(topic, body.getBytes());
