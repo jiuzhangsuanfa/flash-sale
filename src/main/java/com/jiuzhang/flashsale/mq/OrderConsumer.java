@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSON;
+import com.jiuzhang.flashsale.common.enums.OrderStatus;
 import com.jiuzhang.flashsale.entity.OrderEntity;
-import com.jiuzhang.flashsale.enums.OrderStatus;
 import com.jiuzhang.flashsale.exception.RedisUserException;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.OrderService;

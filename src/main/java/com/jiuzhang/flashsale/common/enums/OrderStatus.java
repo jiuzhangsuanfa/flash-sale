@@ -1,4 +1,4 @@
-package com.jiuzhang.flashsale.enums;
+package com.jiuzhang.flashsale.common.enums;
 
 import com.baomidou.mybatisplus.annotation.IEnum;
 

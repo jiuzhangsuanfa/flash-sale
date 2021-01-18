@@ -7,8 +7,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jiuzhang.flashsale.common.enums.ActivityStatus;
 import com.jiuzhang.flashsale.entity.ActivityEntity;
-import com.jiuzhang.flashsale.enums.ActivityStatus;
 import com.jiuzhang.flashsale.exception.RedisStockException;
 import com.jiuzhang.flashsale.mapper.ActivityMapper;
 import com.jiuzhang.flashsale.service.ActivityService;

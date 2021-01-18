@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 import javax.annotation.Resource;
 
+import com.jiuzhang.flashsale.common.enums.OrderStatus;
 import com.jiuzhang.flashsale.entity.OrderEntity;
-import com.jiuzhang.flashsale.enums.OrderStatus;
 import com.jiuzhang.flashsale.util.SnowFlake;
 
 import org.junit.jupiter.api.Test;

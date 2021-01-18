@@ -5,9 +5,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.jiuzhang.flashsale.common.enums.ActivityStatus;
 import com.jiuzhang.flashsale.entity.ActivityEntity;
 import com.jiuzhang.flashsale.entity.CommodityEntity;
-import com.jiuzhang.flashsale.enums.ActivityStatus;
 import com.jiuzhang.flashsale.service.ActivityService;
 import com.jiuzhang.flashsale.service.CommodityService;
 

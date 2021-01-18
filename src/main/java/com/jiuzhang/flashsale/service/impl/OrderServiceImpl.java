@@ -6,9 +6,9 @@ import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jiuzhang.flashsale.common.enums.OrderStatus;
 import com.jiuzhang.flashsale.entity.ActivityEntity;
 import com.jiuzhang.flashsale.entity.OrderEntity;
-import com.jiuzhang.flashsale.enums.OrderStatus;
 import com.jiuzhang.flashsale.exception.OrderCreateException;
 import com.jiuzhang.flashsale.exception.OrderInvalidException;
 import com.jiuzhang.flashsale.exception.OrderNotExistException;
