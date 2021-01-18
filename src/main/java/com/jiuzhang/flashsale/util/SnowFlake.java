@@ -55,7 +55,7 @@ public class SnowFlake {
      * @return
      */
     public synchronized long nextId() {
-        long currentStamp = getNewstamp();
+        long currentStamp = getNewStamp();
         if (currentStamp < lastStamp) {
             throw new SnowFlakeGenerateException("Clock moved backwards, refusing to generate id.");
         }
@@ -81,14 +81,14 @@ public class SnowFlake {
     }
 
     private long getNextMillis() {
-        long millis = getNewstamp();
+        long millis = getNewStamp();
         while (millis <= lastStamp) {
-            millis = getNewstamp();
+            millis = getNewStamp();
         }
         return millis;
     }
 
-    private long getNewstamp() {
+    private long getNewStamp() {
         return System.currentTimeMillis();
     }
 
