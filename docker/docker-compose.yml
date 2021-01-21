@@ -1,0 +1,84 @@
+version: "3.7"
+
+services:
+  flashsale-rmqnamesrv:
+    image: iinfinity/rocketmq:4.8.0
+    container_name: flashsale-rmqnamesrv
+    ports:
+      - 9876:9876
+    volumes:
+      - "flashsale-rocketmq-logs:/usr/local/rocketmq/logs"
+      - "flashsale-rocketmq-store:/usr/local/rocketmq/store"
+    environment:
+      JAVA_OPT_EXT: "-Duser.home=/usr/local/rocketmq -Xms512M -Xmx512M -Xmn128m"
+    command: ["mqnamesrv"]
+    networks:
+      flashsale:
+
+  flashsale-rmqbroker:
+    image: iinfinity/rocketmq:4.8.0
+    container_name: flashsale-rmqbroker
+    ports:
+      - 10909:10909
+      - 10911:10911
+    environment:
+      JAVA_OPT_EXT: "-Duser.home=/usr/local/rocketmq -Xms512M -Xmx512M -Xmn128m"
+    command: ["mqbroker", "-c", "/usr/local/rocketmq/conf/broker.conf"]
+    volumes:
+      - "./config/broker.conf:/usr/local/rocketmq/conf/broker.conf"
+      - "flashsale-rocketmq-logs:/usr/local/rocketmq/logs"
+      - "flashsale-rocketmq-store:/usr/local/rocketmq/store"
+    depends_on:
+      - flashsale-rmqnamesrv
+    networks:
+      flashsale:
+
+  flashsale-rmqconsole:
+    image: styletang/rocketmq-console-ng
+    container_name: flashsale-rmqconsole
+    ports:
+      - 8081:8080
+    environment:
+      JAVA_OPTS: "-Drocketmq.namesrv.addr=flashsale-rmqnamesrv:9876"
+    depends_on:
+      - flashsale-rmqnamesrv
+      - flashsale-rmqbroker
+    networks:
+      flashsale:
+
+  flashsale-redis:
+    image: redis:6-alpine
+    container_name: flashsale-redis
+    ports:
+      - 6379:6379
+    volumes:
+      - flashsale-redis:/data
+    networks:
+      flashsale:
+
+  flashsale-mysql:
+    image: mysql:5.7
+    container_name: flashsale-mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - flashsale-mysql:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: flashsale
+      MYSQL_USER: flashsale
+      MYSQL_PASSWORD: flashsale
+    networks:
+      flashsale:
+
+networks:
+  flashsale:
+    name: flashsale
+    driver: bridge
+
+volumes:
+  flashsale-rocketmq-logs:
+  flashsale-rocketmq-store:
+  flashsale-redis:
+  flashsale-mysql:

@@ -1,0 +1,30 @@
+server:
+    port: 8080 # Web 服务端口
+
+spring:
+    datasource: # 数据源，配置为 MySQL 数据库
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/flashsale
+        username: root
+        password: root
+    redis: # Redis 配置
+        host: localhost
+        port: 6379
+        timeout: 0
+        jedis:
+            pool: # 连接池配置
+                max-wait: -1 # 连接池最大阻塞时间，负值表示无限制
+                max-active: 200 # 最大连接数
+                max-idle: 20 # 最大空闲连接数
+                min-idle: 1 # 最小空闲连接数
+    session:
+        store-type: none
+
+mybatis-plus: # MyBatis Plus Mapper Config
+    mapper-locations: classpath:mapper/*.xml
+    type-enums-package: com.jiuzhang.flashsale.enums
+
+rocketmq: # RocketMQ Config
+    name-server: localhost:9876 # Name Server Config
+    producer:
+        group: flashsale-group

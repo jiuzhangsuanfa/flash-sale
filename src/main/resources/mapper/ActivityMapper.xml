@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiuzhang.flashsale.mapper.ActivityMapper">
+
+    <update id="lockStock" parameterType="java.lang.Long">
+        UPDATE `activity`
+        SET available_stock = available_stock - 1,
+            lock_stock = lock_stock + 1
+        WHERE id = #{id,jdbcType=BIGINT}
+        AND available_stock > 0
+</update>
+
+    <update id="revertStock" parameterType="java.lang.Long">
+        UPDATE `activity`
+        SET available_stock = available_stock + 1,
+            lock_stock = lock_stock - 1
+        WHERE id = #{id,jdbcType=BIGINT}
+</update>
+
+    <update id="deductStock" parameterType="java.lang.Long">
+    UPDATE `activity`
+    SET lock_stock = lock_stock - 1
+    WHERE id = #{id,jdbcType=BIGINT}
+</update>
+
+</mapper>
